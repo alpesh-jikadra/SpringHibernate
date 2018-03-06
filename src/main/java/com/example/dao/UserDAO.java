@@ -6,6 +6,6 @@ import com.example.dto.User;
 
 public interface UserDAO {
 
-	
-	public List<User> list();
+	public User get();
+	public List<User> listAll();
 }

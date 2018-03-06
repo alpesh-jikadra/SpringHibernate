@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+		
+	<mvc:annotation-driven />
+	
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    	<property name="prefix" value="/WEB-INF/views/" />
+    	<property name="suffix" value=".jsp" />
+	</bean>
+		
+	<context:component-scan base-package="com.example" />
+		
+	<bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="dataSource">
+	   <property name="driverClassName">
+			<value>com.mysql.jdbc.Driver</value>
+		</property>
+		<property name="url">
+			<value>jdbc:mysql://localhost:3307/test?useOldAliasMetadataBehavior=true&amp;useSSL=false</value>
+		</property>
+		<property name="username">
+			<value>root</value>
+		</property>
+		<property name="password">
+			<value>root</value>
+		</property>
+  </bean>
+  
+  <bean class="org.springframework.orm.hibernate3.LocalSessionFactoryBean" id="sessionFactory">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="configLocation">
+			<value>classpath:hibernate.cfg.xml</value>
+		</property>
+	</bean>
+	
+	
+	<bean class="org.springframework.orm.hibernate3.HibernateTransactionManager"
+		id="transactionManager">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	
+	
+	<bean class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"
+		id="abstractTransactionFactoryBean" abstract="true">
+		
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+		
+		<property name="transactionAttributes">
+			<props>
+				<prop key="listAll*">PROPAGATION_REQUIRES_NEW,-Exception</prop>
+				<prop key="get*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="remove*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="*">PROPAGATION_REQUIRED,-Exception,-SQLException</prop>
+				
+			</props>
+		</property>
+	</bean>
+	
+	
+	<bean id="userDAO" parent="abstractTransactionFactoryBean">
+		<property name="target">
+			<bean class="com.example.dao.UserDAOImpl">
+				<property name="sessionFactory">
+					<ref bean="sessionFactory" />
+				</property>
+			</bean>
+		</property>
+	</bean>
+	
+	
+	
+
+	
+</beans>
