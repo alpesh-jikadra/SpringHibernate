@@ -8,4 +8,5 @@ public interface UserDAO {
 
 	public User get();
 	public List<User> listAll();
+	public List<User> listAndGet();
 }

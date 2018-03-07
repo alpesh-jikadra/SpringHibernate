@@ -31,6 +31,14 @@ public class UserDAOImpl implements UserDAO {
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
+
+	@Override
+	public List<User> listAndGet() {
+		Session session = SessionFactoryUtils.getSession(sessionFactory, true);
+		List<User> list = session.createQuery("from User").list();
+		list.add(get());
+		return list;
+	}
 	
 	
 }

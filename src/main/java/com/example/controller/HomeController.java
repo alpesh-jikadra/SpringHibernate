@@ -51,10 +51,20 @@ public class HomeController {
 	@RequestMapping(value="/listAndGet")
 	public ModelAndView listAndGet(){
 		
+		List<User> listAll = userDAO.listAndGet();
+		ModelAndView mv=  new ModelAndView("home");
+		mv.addObject("userList", listAll);
+		return mv;
+		
+	}
+	
+	@RequestMapping(value="/retrieveAllAndGet")
+	public ModelAndView retrieveAllAndGet(){
+		
 		List<User> listAll = userDAO.listAll();
 		User user = userDAO.get();
-		ModelAndView mv=  new ModelAndView("home");
 		listAll.add(user);
+		ModelAndView mv=  new ModelAndView("home");
 		mv.addObject("userList", listAll);
 		return mv;
 		
