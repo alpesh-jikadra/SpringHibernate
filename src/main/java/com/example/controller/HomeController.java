@@ -10,12 +10,17 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.example.dao.UserDAO;
 import com.example.dto.User;
+import com.example.manager.UserManager;
 
 @Controller
 public class HomeController {
 
 	@Autowired
 	private UserDAO userDAO;
+	
+	@Autowired
+	private UserManager userManager;
+	
 	
 	@RequestMapping(value="/")
 	public ModelAndView home(){
@@ -69,5 +74,16 @@ public class HomeController {
 		return mv;
 		
 	}
+	
+	@RequestMapping(value="/retrieveAllByManager")
+	public ModelAndView retrieveAllByManager(){
+		
+		List<User> listAll = userManager.readAllUsers();
+		ModelAndView mv=  new ModelAndView("home");
+		mv.addObject("userList", listAll);
+		return mv;
+		
+	}
+	
 	
 }

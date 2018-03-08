@@ -14,6 +14,7 @@
 	<a href="/SpringHibernate/get">Use Existing or create New Transaction</a> <br/>
 	<a href="/SpringHibernate/listAndGet">First create new and then use existing</a> <br/>
 	<a href="/SpringHibernate/retrieveAllAndGet">retrieveAllAndGet</a> <br/>
+	<a href="/SpringHibernate/retrieveAllByManager">ByManager</a> <br/>
 	
 		<div align="center">
             <h1>Contact List</h1>
